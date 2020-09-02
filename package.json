@@ -1,16 +1,16 @@
 {
-	"name": "FirstBot",
+	"name": "lambot09",
 	"version": "1.0.0",
-	"description": "",
+	"description": "Telegram Bot",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
 		"start" : "node index.js",
 		"dev": "nodemon index.js"
 	},
 	"keywords": [],
-	"author": "",
+	"author": "Luis Martinez",
 	"license": "ISC",
+	"type" : "module",
 	"dependencies": {
 		"extra": "^0.2.1",
 		"markup": "0.0.4",
