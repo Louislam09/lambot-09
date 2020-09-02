@@ -145,7 +145,7 @@ async function Clima() {
 		ctx.replyWithHTML(`
 		<b>Entra en este sitio para saber el clima</b>
 
-		
+
 		${gameUrl}
 		`);
 	});
@@ -201,14 +201,14 @@ async function EnglishWord() {
 //   )
 // )
 
-async function getInfo() {
-	bot.command('chatid', (ctx) => {
-		const chatId = ctx.chat.id;
-		ctx.reply('El id de este chat es: ' + chatId);
-		console.log('El id de este chat es: ' + chatId);
-	});
+// async function getInfo() {
+// 	bot.command('chatid', (ctx) => {
+// 		const chatId = ctx.chat.id;
+// 		ctx.reply('El id de este chat es: ' + chatId);
+// 		console.log('El id de este chat es: ' + chatId);
+// 	});
 
-}
+// }
 
 function InitBotFunctions() {
 	try {
@@ -219,7 +219,7 @@ function InitBotFunctions() {
 		EmojiQuizGame();
 		Clima();
 		EnglishWord();
-		getInfo();
+		// getInfo();
 	} catch (e) {
 		if (e.code === 403) {
 			console.log('This is the error:' + e);
