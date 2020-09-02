@@ -4,10 +4,13 @@
 	"description": "Telegram Bot",
 	"main": "index.js",
 	"scripts": {
-		"start" : "node index.js",
-		"dev": "nodemon index.js"
+		"start" : "node index.js"
 	},
-	"keywords": [],
+	"keywords": [
+		"node",
+		"heroku",
+		"telegraf"
+	],
 	"author": "Luis Martinez",
 	"license": "ISC",
 	"dependencies": {
@@ -15,6 +18,9 @@
 		"markup": "0.0.4",
 		"node-fetch": "^2.6.0",
 		"telegraf": "^3.36.0"
+	},
+	"engines" : {
+		"node": "10.16.0"
 	},
 	"devDependencies": {
 		"nodemon": "^2.0.2"
