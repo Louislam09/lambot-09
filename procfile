@@ -1,2 +1,1 @@
-worker: node index -m lambot09.worker
-worker : node index.js
+worker: node index.js
