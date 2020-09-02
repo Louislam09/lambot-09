@@ -1,1 +1,2 @@
-worker: node index.js @Lam09Bot
+worker: node index -m lambot09.worker
+worker : node index.js
