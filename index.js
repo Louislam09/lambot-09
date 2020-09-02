@@ -67,6 +67,22 @@ async function Wallpaper() {
 	console.log('/wallpaper');
 }
 
+async function FollowMelodyGame(){
+	const gameUrl = 'https://louislam09.github.io/FollowMelody/';
+	const gameShortName = 'followMelody';
+
+	bot.command('followMelody', (ctx) => {
+		ctx.replyWithHTML(`
+		<b>Click En El Link Para Jugar</b>
+
+		<b>${gameShortName}</b>
+
+		${gameUrl}
+		`);
+	});
+	bot.launch();
+}
+
 async function MathGame() {
 // 	console.log('/mathgame');
 	bot.command('mathgame',({reply}) => reply('Lo sentimos este juego no esta disponible.'))
@@ -219,6 +235,7 @@ function InitBotFunctions() {
 		EmojiQuizGame();
 		Clima();
 		EnglishWord();
+		FollowMelodyGame();
 		// getInfo();
 	} catch (e) {
 		if (e.code === 403) {
