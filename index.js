@@ -9,6 +9,11 @@ const config = new require('./config.json');
 const bot = new Telegraf(config.secret_token);
 
 const things = require('./jsons/things.json');
+const chatsId = [
+	'-359907598',
+	'-329604776'
+]
+
 const { markup } = require('telegraf/extra');
 const imageURL = `https://www.randomlists.com/img/things/`;
 const words = things.RandL.items;
@@ -154,16 +159,21 @@ async function EmojiQuizGame() {
 async function Clima() {
 	console.log('/clima');
 
-	const gameUrl = 'https://5f1e1248edb4de54da9fb53c--lucid-jang-e3e295.netlify.app/';
-	const gameShortName = 'clima';
-
+	const appUrl = 'https://5f1e1248edb4de54da9fb53c--lucid-jang-e3e295.netlify.app/';
+	const climaImg = `https://agroverdad.com.ar/wp-content/uploads/2018/01/smn1.jpg`;
 	bot.command('clima', (ctx) => {
-		ctx.replyWithHTML(`
-		<b>Entra en este sitio para saber el clima</b>
-
-
-		${gameUrl}
-		`);
+		ctx.telegram.sendPhoto(ctx.chat.id,`${climaImg}`,{
+			caption: '<b>Clima App</b>' ,
+			reply_markup: {
+				inline_keyboard: [
+					[{
+					text: '👉 CLICK AQUI PARA SABER EL CLIMA DE TU CIUDAD 👈',
+					url: `${appUrl}`
+				}]
+			]
+			},
+			parse_mode: 'HTML'
+		})
 	});
 
 	// bot.gameQuery(({ answerGameQuery }) => answerGameQuery(gameUrl));
@@ -201,6 +211,7 @@ async function EnglishWord() {
 	
 	bot.launch();
 }
+function extraThings(){
 // bot.command('quiz', (ctx) =>
 //   ctx.replyWithQuiz(
 //     '2b|!2b',
@@ -217,14 +228,148 @@ async function EnglishWord() {
 //   )
 // )
 
-// async function getInfo() {
-// 	bot.command('chatid', (ctx) => {
-// 		const chatId = ctx.chat.id;
-// 		ctx.reply('El id de este chat es: ' + chatId);
-// 		console.log('El id de este chat es: ' + chatId);
-// 	});
+}
 
-// }
+async function sendMessageToChat(){
+	bot.command('notification',(ctx) => {
+		chatsId.forEach( id => {
+			ctx.telegram.sendMessage(id,'El bot dice hola');
+		})
+	})
+	bot.launch();
+}
+
+
+async function getInfo() {
+	bot.command('chatid', (ctx) => {
+		const chatId = ctx.chat.id;
+		ctx.reply('El id de este chat es: ' + chatId);
+		console.log('El id de este chat es: ' + chatId);
+	});
+}
+
+async function InlineResponse(){
+	bot.on('inline_query',(ctx) => {
+		const word = ctx.inlineQuery.query;
+		const imageURL = `https://www.randomlists.com/img/things/`;
+		const imagePath = `${imageURL}${word}.jpg`;
+
+		result = [
+			{
+				type: 'article',
+				id: '1',
+				title: 'Title 1',
+				input_message_content: {
+					message_text: 'Text 1'
+				}
+			},
+			{
+				type: 'article',
+				id: '2',
+				title: 'Title 2',
+				input_message_content: {
+					message_text: 'Text 2'
+				}
+			},
+			{
+				type: 'article',
+				id: '3',
+				title: 'Title 3',
+				input_message_content: {
+					message_text: 'Text 3'
+				}
+			}
+		]
+
+		// type	String	Type of the result, must be photo
+		// id	String	Unique identifier for this result, 1-64 bytes
+		// photo_url	String	A valid URL of the photo. Photo must be in jpeg format. Photo size must not exceed 5MB
+		// thumb_url	String	URL of the thumbnail for the photo
+		imageResult = [
+			{
+				type: 'photo',
+				id: '1',
+				photo_url: imagePath,
+				thumb_url: imagePath
+			}
+		]
+
+		ctx.answerInlineQuery(imageResult);
+	})
+
+	bot.launch();
+}
+
+async function TranslateWord(){
+	bot.on('inline_query',(ctx) => {
+		const verbs = require('./jsons/verbs.json');
+		const verbs_spanish = require('./jsons/verbs_spanish.json');
+
+		try {
+			const word = ctx.inlineQuery.query;
+			const wordToTraslate = word.toLowerCase();
+			const wordIndex = verbs.data.indexOf(wordToTraslate);
+			
+			if(wordIndex === -1) return;
+			const wordTrasleted = verbs_spanish.data[wordIndex];
+	
+			traslateResult = [
+				{
+					type: 'article',
+					id: '1',
+					title: `The word ${word.toUpperCase()} means: ${wordTrasleted}`,
+					input_message_content: {
+						message_text: wordTrasleted
+					}
+				}
+			]
+			ctx.answerInlineQuery(traslateResult);
+	
+		} catch (error) {
+			console.log(error)
+		}
+	
+	})
+
+	bot.launch();
+}
+
+async function Vocabulary(){
+	bot.on('inline_query',(ctx) => {
+		const vocabulary = require('./jsons/vacabulary_words.json');
+		const vocabulary_spanish = require('./jsons/vocabulary_words_spanish.json');
+
+		try {
+			const word = ctx.inlineQuery.query;
+			let wordIndex = -1;
+
+			vocabulary.data.forEach((voca,index) => {
+				if(voca.name === word.toLowerCase()) wordIndex = index;
+			})
+			
+			if(wordIndex === -1) return;
+			const wordTraslated = vocabulary_spanish.data[wordIndex];
+	
+			traslateResult = [
+				{
+					type: 'article',
+					id: '1',
+					title: `The word ${word.toUpperCase()} means: ${wordTraslated.detalle}`,
+					input_message_content: {
+						message_text: wordTraslated.datalle
+					}
+				}
+			]
+			ctx.answerInlineQuery(traslateResult);
+	
+		} catch (error) {
+			console.log(error)
+		}
+	
+	})
+
+	bot.launch();
+}
 
 function InitBotFunctions() {
 	try {
@@ -236,7 +381,12 @@ function InitBotFunctions() {
 		Clima();
 		EnglishWord();
 		FollowMelodyGame();
-		// getInfo();
+		// inlineResponse();
+		TranslateWord();
+		// Vocabulary();
+
+		getInfo();
+		sendMessageToChat();
 	} catch (e) {
 		if (e.code === 403) {
 			console.log('This is the error:' + e);
